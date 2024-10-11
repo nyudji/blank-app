@@ -1,4 +1,4 @@
-![{27426387-4CC5-48F0-BAAB-ECF3C3107EF4}](https://github.com/user-attachments/assets/ddc3a3d3-e750-44fd-b189-dc4306e849ce)# 
+![{27426387-4CC5-48F0-BAAB-ECF3C3107EF4}](https://github.com/user-attachments/assets/ddc3a3d3-e750-44fd-b189-dc4306e849ce)
 
 🎈 Projeto 2 Streamlit , Dash e IA
 
