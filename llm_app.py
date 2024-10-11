@@ -4,7 +4,7 @@ df_vendas = pd.read_csv("bases/amazon.csv")
 
 df_vendas = pd.DataFrame(df_vendas)
 df_vendas
-df_vendas = df_vendas.sample(n=15, random_state=1)
+df_vendas = df_vendas.sample(n=25, random_state=1)
 #Começo LLM
 
 from langchain_openai import ChatOpenAI
@@ -28,7 +28,7 @@ A categoria está como
 E quero que escolha a categoria deste item:
 {text2}
 
-Responda apenas com a categoria do produto em ingles, pois vou colocar na nova categoria, portanto sem respostas longas, apenas a categoria, exemplo 'TV','Mousepad','Cable', porém não tem especifico, como 'Ballpoint Pens', ou 'Fountain Pens', quero que coloque como 'Pens' apenas.
+Responda apenas com a categoria do produto em ingles, pois vou colocar na nova categoria, portanto sem respostas longas, apenas a categoria, exemplo 'Ferramentas Oficina, TV e acessorios, Hardware, Cabos, Fones de ouvido, Perifericos', porém não tem especifico, como 'Ballpoint Pens', ou 'Fountain Pens', quero que coloque como 'Pens' apenas.
 """
 
 #Coloca o prompt em um template 
