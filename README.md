@@ -1,8 +1,11 @@
-# 🎈 Projeto 2 Streamlit , Dash e IA
+![{43ACBD02-8FFC-4622-8EB6-443587E9FC5D}](https://github.com/user-attachments/assets/e897083f-e3b1-4cfa-95bd-d3f2d6e7ffaa)
+
+
+🎈 Projeto 2 Streamlit , Dash e IA
 
 A simple Streamlit app
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+
 
 ### How to run it on your own machine
 
