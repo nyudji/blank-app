@@ -1,1 +1,9 @@
 streamlit
+angchain_core
+langchain_groq
+langchain_openai
+openai
+pandas
+plotly
+python-dotenv
+streamlit
