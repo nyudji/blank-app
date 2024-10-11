@@ -2,9 +2,9 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-st.set_page_config(layout="wide", page_title='Dashboard Amazon Products')
+st.set_page_config(layout="wide")
 
-st.title("🎈 Dashboard produtos Amazon")
+st.title("🎈 Dashboard produtos amazon")
 st.write(
     "Projetinho com tratamento feito com pandas e categorizado com IA e depois feito um dash em streamlit."
 )
@@ -15,11 +15,12 @@ df = pd.read_csv("bases/financeiro.csv")
 # Limpar a coluna 'actual_price'
 df['actual_price'] = df['actual_price'].replace({'₹': '', ',': ''}, regex=True).astype(float)
 
-
-def filter_data(df, selected_categories):
-    df_filtered = df.copy()  # Inicializa df_filtered com o DataFrame original
+def filter_data(df, selected_categories, price_range):
+    df_filtered = df.copy()
     if selected_categories:
-        df_filtered = df_filtered[df_filtered['category'].isin(selected_categories)]  # Filtra o DataFrame
+        df_filtered = df_filtered[df_filtered['category'].isin(selected_categories)]
+    # Filtrar pela faixa de preço
+    df_filtered = df_filtered[(df_filtered['actual_price'] >= price_range[0]) & (df_filtered['actual_price'] <= price_range[1])]
     return df_filtered
 
 # Filtros de data
@@ -29,8 +30,13 @@ st.sidebar.header("Filtros")
 categories = df["category"].unique().tolist()
 selected_categories = st.sidebar.multiselect("Filtrar por Categorias", categories, default=categories)
 
+# Filtro de faixa de preço
+min_price = df["actual_price"].min()
+max_price = df["actual_price"].max()
+price_range = st.sidebar.slider("Filtrar por Faixa de Preço", min_value=float(min_price), max_value=float(max_price), value=(float(min_price), float(max_price)))
+
 # Filtrar dados com base na seleção
-df_filtered = filter_data(df, selected_categories)
+df_filtered = filter_data(df, selected_categories, price_range)
 
 # ====================
 c1, c2 = st.columns([0.6, 0.4])
@@ -49,7 +55,6 @@ if not df_filtered.empty:
     # Agregação para soma de preços únicos
     price_distribution = unique_prices.groupby("category")["actual_price"].sum().reset_index()
     price_distribution.columns = ['category', 'total_price']  # Renomear para melhor clareza
-    price_distribution
 
     # Gráfico para soma dos preços únicos
     fig_price = px.pie(price_distribution, values='total_price', names='category',
