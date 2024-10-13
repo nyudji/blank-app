@@ -3,7 +3,7 @@
 
 🎈 Projeto 2 Streamlit , Dash e IA
 
-A simple Streamlit app
+Streamlit app, onde peguei dados do kaggle de uma base de amazon, usei LLM na GROQ para categorizar os produtos melhores e finalizado em streamlit com dashs interativos.
 
 
 
