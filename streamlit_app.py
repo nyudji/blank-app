@@ -15,6 +15,7 @@ df = pd.read_csv("bases/financeiro.csv")
 # Limpar a coluna 'actual_price'
 df['actual_price'] = df['actual_price'].replace({'₹': '', ',': ''}, regex=True).astype(float)
 
+# Função para filtrar dados
 def filter_data(df, selected_categories, price_range):
     df_filtered = df.copy()
     if selected_categories:
@@ -39,36 +40,61 @@ price_range = st.sidebar.slider("Filtrar por Faixa de Preço", min_value=float(m
 df_filtered = filter_data(df, selected_categories, price_range)
 
 # ====================
-c1, c2 = st.columns([0.6, 0.4])
+# Abas do dashboard
+page = st.sidebar.radio("Selecione a Página", ("Visão Geral", "Relatórios"))
 
-# Mostrar tabela filtrada
-c1.subheader("Tabela de Finanças Filtradas")
-c1.dataframe(df_filtered)
+if page == "Visão Geral":
+    c1, c2 = st.columns([0.6, 0.4])
 
-c2.subheader("Distribuição de Categorias")
+    # Mostrar tabela filtrada
+    c1.subheader("Tabela de Finanças Filtradas")
+    c1.dataframe(df_filtered)
 
-# Verifica se df_filtered não está vazio
-if not df_filtered.empty:
-    # Remover duplicatas para considerar apenas preços únicos
-    unique_prices = df_filtered.drop_duplicates(subset=['category', 'actual_price'])
-    
-    # Agregação para soma de preços únicos
-    price_distribution = unique_prices.groupby("category")["actual_price"].sum().reset_index()
-    price_distribution.columns = ['category', 'total_price']  # Renomear para melhor clareza
+    c2.subheader("Distribuição de Categorias")
 
-    # Gráfico para soma dos preços únicos
-    fig_price = px.pie(price_distribution, values='total_price', names='category',
-                        title='Soma dos Preços Únicos por Categoria', hole=0.3)
-    c2.plotly_chart(fig_price, use_container_width=True)
+    # Verifica se df_filtered não está vazio
+    if not df_filtered.empty:
+        # Remover duplicatas para considerar apenas preços únicos
+        unique_prices = df_filtered.drop_duplicates(subset=['category', 'actual_price'])
+        
+        # Agregação para soma de preços únicos
+        price_distribution = unique_prices.groupby("category")["actual_price"].sum().reset_index()
+        price_distribution.columns = ['category', 'total_price']  # Renomear para melhor clareza
 
-    # Agregação para quantidade de produtos
-    quantity_distribution = df_filtered['category'].value_counts().reset_index()
-    quantity_distribution.columns = ['category', 'product_count']  # Renomear para melhor clareza
+        # Gráfico para soma dos preços únicos
+        fig_price = px.pie(price_distribution, values='total_price', names='category',
+                            title='Soma dos Preços Únicos por Categoria', hole=0.3)
+        c2.plotly_chart(fig_price, use_container_width=True)
 
-    # Gráfico para quantidade de produtos
-    fig_quantity = px.bar(quantity_distribution, x='category', y='product_count',
-                           title='Quantidade de Produtos por Categoria')
-    c2.plotly_chart(fig_quantity, use_container_width=True)
+        # Agregação para quantidade de produtos
+        quantity_distribution = df_filtered['category'].value_counts().reset_index()
+        quantity_distribution.columns = ['category', 'product_count']  # Renomear para melhor clareza
 
-else:
-    c2.write("Nenhum dado disponível após o filtro.")
+        # Gráfico para quantidade de produtos
+        fig_quantity = px.bar(quantity_distribution, x='category', y='product_count',
+                               title='Quantidade de Produtos por Categoria')
+        c2.plotly_chart(fig_quantity, use_container_width=True)
+
+    else:
+        c2.write("Nenhum dado disponível após o filtro.")
+
+elif page == "Relatórios":
+    st.subheader("Relatórios de Produtos")
+
+    # Produtos mais rentáveis
+    st.write("### Produtos Mais Rentáveis")
+    top_products = df_filtered.groupby(['product_name'])['actual_price'].sum().reset_index()
+    top_products = top_products.sort_values(by='actual_price', ascending=False).head(10)  # Top 10
+    st.dataframe(top_products)
+
+    # Categorias em alta
+    st.write("### Categorias em Alta")
+    category_performance = df_filtered['category'].value_counts().reset_index()
+    category_performance.columns = ['category', 'product_count']
+    top_categories = category_performance.sort_values(by='product_count', ascending=False).head(10)  # Top 10
+    st.dataframe(top_categories)
+
+    st.write("### Produtos Menos Rentáveis")
+    top_products = df_filtered.groupby(['product_name'])['actual_price'].sum().reset_index()
+    top_products = top_products.sort_values(by='actual_price', ascending=True).head(10)  # Top 10
+    st.dataframe(top_products)

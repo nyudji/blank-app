@@ -1,6 +1,0 @@
-import pandas as pd 
-df_vendas = pd.read_csv("bases/financeiro.csv")
-
-df_vendas = pd.DataFrame(df_vendas)
-print(df_vendas)
-df_vendas
