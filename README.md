@@ -1,9 +1,8 @@
-![{43ACBD02-8FFC-4622-8EB6-443587E9FC5D}](https://github.com/user-attachments/assets/e897083f-e3b1-4cfa-95bd-d3f2d6e7ffaa)
-
+![{1B4B3599-7A1E-4E89-ADDE-E6DF017F2D37}](https://github.com/user-attachments/assets/5575664e-e636-423b-870b-08fd8269f025)
 
 🎈 Projeto 2 Streamlit , Dash e IA
 
-A simple Streamlit app
+Streamlit app, onde peguei dados do kaggle de uma base de amazon, usei LLM na GROQ para categorizar os produtos melhores e finalizado em streamlit com dashs interativos.
 
 
 
